@@ -25,12 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintTop_toTopOf="@+id/dueTime"
+            app:layout_constraintTop_toTopOf="@+id/itemTime"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/dueTime"
+            app:layout_constraintBottom_toBottomOf="@+id/itemTime"
     />
     <TextView
-            android:id="@+id/dueTime"
+            android:id="@+id/itemTime"
             android:text="Time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             app:layout_constraintStart_toEndOf="@+id/itemCount"
     />
     <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/itemTick"
             android:text="tick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

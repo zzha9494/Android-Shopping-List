@@ -6,7 +6,7 @@ public class Item {
     private String name;
     private int count;
     private Calendar time;
-    private boolean isChecked;
+    private boolean ticked;
 
     public Item(String name) {
         this(name, 1);
@@ -16,7 +16,7 @@ public class Item {
         this.name = name;
         this.count = count;
         this.time = Calendar.getInstance();
-        this.isChecked = false;
+        this.ticked = false;
     }
 
     public String getName() {
@@ -43,11 +43,28 @@ public class Item {
         this.time = time;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public String getTimeGap() {
+        Calendar now = Calendar.getInstance();
+        if (this.ticked)
+            return "";
+
+        if (this.time.before(now))
+            return "OVERDUE";
+
+        Long temp = this.time.getTimeInMillis() - now.getTimeInMillis();
+        int hours = (int) (temp / 1000 / 60 / 60); //hours
+        int days = hours / 24;
+        hours = hours % 24;
+        if (days != 0)
+            return days + " Days " + hours + " Hrs";
+        return hours + " Hrs";
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public boolean isTicked() {
+        return ticked;
+    }
+
+    public void setTicked(boolean ticked) {
+        this.ticked = ticked;
     }
 }

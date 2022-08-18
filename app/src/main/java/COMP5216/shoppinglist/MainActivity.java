@@ -7,19 +7,24 @@ import android.os.Bundle;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
     ArrayList<Item> items;
+    ListView listView;
+    ItemAdapter itemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        reference
-        listView = findViewById(R.id.listView);
-
         items = new ArrayList<>();
         items.add(new Item("test"));// test data
+
+        listView = findViewById(R.id.listView);
+
+        itemAdapter = new ItemAdapter(items, this);
+        listView.setAdapter(itemAdapter);
+
+
 
 
     }
