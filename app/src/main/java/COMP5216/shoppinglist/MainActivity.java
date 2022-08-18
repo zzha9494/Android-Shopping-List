@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Item> items;
@@ -17,7 +18,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         items = new ArrayList<>();
+
+        // test data
         items.add(new Item("test"));// test data
+//        Calendar c = items.get(0).getTime();
+//        c.add(Calendar.HOUR, 1);
+//        items.get(0).setTime(c);
+
 
         listView = findViewById(R.id.listView);
 

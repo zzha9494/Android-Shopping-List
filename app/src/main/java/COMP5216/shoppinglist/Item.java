@@ -1,5 +1,7 @@
 package COMP5216.shoppinglist;
 
+import android.util.Log;
+
 import java.util.Calendar;
 
 public class Item {
@@ -16,6 +18,7 @@ public class Item {
         this.name = name;
         this.count = count;
         this.time = Calendar.getInstance();
+        this.time.add(Calendar.HOUR, 1); // default +1
         this.ticked = false;
     }
 
@@ -52,7 +55,11 @@ public class Item {
             return "OVERDUE";
 
         Long temp = this.time.getTimeInMillis() - now.getTimeInMillis();
-        int hours = (int) (temp / 1000 / 60 / 60); //hours
+        int mins = (int) (temp / 1000 / 60);
+        Log.i("time", "hours: " + mins);
+        if (mins % 60 >= 30)
+            mins += 60;
+        int hours = mins / 60;
         int days = hours / 24;
         hours = hours % 24;
         if (days != 0)
