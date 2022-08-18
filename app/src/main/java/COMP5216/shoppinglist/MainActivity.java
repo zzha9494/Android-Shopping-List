@@ -20,7 +20,9 @@ public class MainActivity extends AppCompatActivity {
         items = new ArrayList<>();
 
         // test data
-        items.add(new Item("test"));// test data
+        for (int i = 0; i < 20; i++)
+            items.add(new Item("item" + i));// test data
+
 //        Calendar c = items.get(0).getTime();
 //        c.add(Calendar.HOUR, 1);
 //        items.get(0).setTime(c);
