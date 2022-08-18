@@ -20,12 +20,10 @@ public class MainActivity extends AppCompatActivity {
         items = new ArrayList<>();
 
         // test data
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++) {
             items.add(new Item("item" + i));// test data
-
-//        Calendar c = items.get(0).getTime();
-//        c.add(Calendar.HOUR, 1);
-//        items.get(0).setTime(c);
+            items.get(i).getTime().add(Calendar.HOUR, i-5);
+        }
 
 
         listView = findViewById(R.id.listView);
