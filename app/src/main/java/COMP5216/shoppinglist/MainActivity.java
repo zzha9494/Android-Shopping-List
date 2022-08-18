@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(items, this);
         listView.setAdapter(itemAdapter);
 
+        setupListener();
+    }
+
+    private void setupListener() {
         ActivityResultLauncher<Intent> mLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -57,14 +61,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, EditAddActivity.class);
-//                intent.putExtra("isNew", true);
                 mLauncher.launch(intent);
-
             }
         });
-
-
-
-
     }
+
+
 }
