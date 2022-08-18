@@ -6,7 +6,9 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/listPreferredItemHeight"
         android:paddingStart="?attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?attr/listPreferredItemPaddingEnd">
+        android:paddingEnd="?attr/listPreferredItemPaddingEnd"
+        android:descendantFocusability="blocksDescendants"
+>
     <TextView
             android:id="@+id/itemName"
             android:text="Name"

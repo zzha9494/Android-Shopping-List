@@ -3,6 +3,7 @@ package COMP5216.shoppinglist;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -64,7 +65,17 @@ public class MainActivity extends AppCompatActivity {
                 mLauncher.launch(intent);
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.i("MainActivity", "Clicked item " + position + ": " + position);
+                Intent intent = new Intent(MainActivity.this, EditAddActivity.class);
+                intent.putExtra("position", position);
+                mLauncher.launch(intent);
+            }
+        });
+
+
     }
-
-
 }
