@@ -46,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
         setupListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sortData(items);
+        itemAdapter.notifyDataSetChanged();
+    }
+
     private void setupListener() {
         ActivityResultLauncher<Intent> mLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
