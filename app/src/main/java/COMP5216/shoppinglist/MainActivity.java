@@ -14,9 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Item> items;
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     else if (result.getResultCode() == RESULT_CANCELED) {
 //                        Log.i("Updated item in list ", ": canceled");
                     }
+                    sortData(items);
                     itemAdapter.notifyDataSetChanged();
                 }
         );
@@ -116,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 items.remove(position);
+                                sortData(items);
                                 itemAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // User cancelled the dialog
                                 // Nothing happens
                             }
                         })
@@ -131,7 +130,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
-
+    public void sortData(List<Item> items) {
+        Collections.sort(items, (i0, i1) -> {
+            if (i0.isTicked() == i1.isTicked())
+                return i0.getTime().compareTo(i1.getTime());
+            else
+                return i0.isTicked() ? 1 : -1;
+        });
     }
 }
