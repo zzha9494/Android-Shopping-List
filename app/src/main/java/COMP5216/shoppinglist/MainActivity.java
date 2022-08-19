@@ -1,5 +1,6 @@
 package COMP5216.shoppinglist;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -31,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+10"));
 
         // test data
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 30; i++) {
             items.add(new Item("item" + i));// test data
-            items.get(i).getTime().add(Calendar.HOUR, i);
+            items.get(i).getTime().add(Calendar.HOUR, i-5);
         }
 
 
@@ -69,12 +71,11 @@ public class MainActivity extends AppCompatActivity {
                             items.add(updatedItem);
                         else
                             items.set(i, updatedItem);
-//                        Log.i("Updated item in list ", ": updated");
-                        itemAdapter.notifyDataSetChanged();
                     }
                     else if (result.getResultCode() == RESULT_CANCELED) {
 //                        Log.i("Updated item in list ", ": canceled");
                     }
+                    itemAdapter.notifyDataSetChanged();
                 }
         );
 
@@ -103,6 +104,31 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("minute", c.get(Calendar.MINUTE));
 
                 mLauncher.launch(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.dialog_delete_title)
+                        .setMessage(R.string.dialog_delete_msg)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                items.remove(position);
+                                itemAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User cancelled the dialog
+                                // Nothing happens
+                            }
+                        })
+                        .create()
+                        .show();
+
+                return true;
             }
         });
 
