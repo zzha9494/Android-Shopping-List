@@ -6,15 +6,15 @@ import java.util.Calendar;
 
 public class Item {
     private String name;
-    private int count;
+    private String count;
     private Calendar time;
     private boolean ticked;
 
     public Item(String name) {
-        this(name, 1);
+        this(name, "1");
     }
 
-    public Item(String name, int count) {
+    public Item(String name, String count) {
         this.name = name;
         this.count = count;
         this.time = Calendar.getInstance();
@@ -30,11 +30,11 @@ public class Item {
         this.name = name;
     }
 
-    public int getCount() {
+    public String getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(String count) {
         this.count = count;
     }
 
