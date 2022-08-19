@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+10"));
 
         // test data
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 5; i++) {
             items.add(new Item("item" + i));// test data
-            items.get(i).getTime().add(Calendar.HOUR, i-5);
+            items.get(i).getTime().add(Calendar.HOUR, i-3);
         }
 
 
