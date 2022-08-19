@@ -4,5 +4,8 @@
     <string name="dialog_delete_title">Delete an item</string>
     <string name="dialog_delete_msg">Have you already purchased this item?</string>
     <string name="yes">Yes</string>
-    <string name="no">No, cancel</string>
+    <string name="no">No, keep it</string>
+    <string name="edit_cancel_title">git checkout .</string>
+    <string name="edit_cancel_message">Are you sure to cancel this edit? Your unsaved edit will be discarded if you click YES</string>
+    <string name="let_me_think">let me think</string>
 </resources>

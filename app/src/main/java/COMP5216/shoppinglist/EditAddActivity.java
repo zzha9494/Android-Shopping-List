@@ -1,5 +1,6 @@
 package COMP5216.shoppinglist;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditAddActivity extends AppCompatActivity {
@@ -89,8 +91,22 @@ public class EditAddActivity extends AppCompatActivity {
     }
 
     public void onSubmitCancel(View v) {
-        Intent result = new Intent();
-        setResult(RESULT_CANCELED, result);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditAddActivity.this);
+        builder.setTitle(R.string.edit_cancel_title)
+                .setMessage(R.string.edit_cancel_message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent result = new Intent();
+                        setResult(RESULT_CANCELED, result);
+                        finish();
+                    }
+                })
+                .setNeutralButton(R.string.let_me_think, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .create()
+                .show();
     }
 }
