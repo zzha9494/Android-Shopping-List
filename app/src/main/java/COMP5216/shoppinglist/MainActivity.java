@@ -52,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
 //                        String editedItem = result.getData().getExtras().getString("item");
 //                        int position = result.getData().getIntExtra("position", -1);
 //                        items.set(position, editedItem);
-                        Log.i("Updated item in list ", "true");
-
+                        Log.i("Updated item in list ", ":" + result.getData().getExtras().getString("name"));
+                        Log.i("Updated item in list ", ":" + result.getData().getExtras().getString("count"));
+                    }
+                    else if (result.getResultCode() == RESULT_CANCELED) {
+                        Log.i("Updated item in list ", ": canceled");
                     }
                 }
         );
@@ -68,10 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.i("MainActivity", "Clicked item " + position + ": " + position);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Log.i("MainActivity", "Clicked item " + position + ": " + position);
                 Intent intent = new Intent(MainActivity.this, EditAddActivity.class);
-                intent.putExtra("position", position);
+                intent.putExtra("position", i);
+                intent.putExtra("name", items.get(i).getName());
+                intent.putExtra("count", String.valueOf(items.get(i).getCount()));
+
                 mLauncher.launch(intent);
             }
         });
