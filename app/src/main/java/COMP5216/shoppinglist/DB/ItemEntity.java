@@ -25,6 +25,13 @@ public class ItemEntity {
     @ColumnInfo
     private boolean ticked;
 
+    public ItemEntity(String name, String count, Date time, boolean ticked) {
+        this.name = name;
+        this.count = count;
+        this.time = time;
+        this.ticked = ticked;
+    }
+
     public int getID() {
         return ID;
     }

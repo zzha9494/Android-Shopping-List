@@ -1,5 +1,8 @@
 package COMP5216.shoppinglist;
 
+import COMP5216.shoppinglist.DB.ItemDB;
+import COMP5216.shoppinglist.DB.ItemDao;
+import COMP5216.shoppinglist.DB.ItemEntity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -15,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Item> items;
@@ -22,20 +26,25 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter itemAdapter;
     Button add;
 
+    ItemDB db;
+    ItemDao itemDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        items = new ArrayList<>();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+10"));
 
-        // test data
-        for (int i = 0; i < 5; i++) {
-            items.add(new Item("item" + i));// test data
-            items.get(i).getTime().add(Calendar.HOUR, i-3);
-        }
+        db = ItemDB.getDatabase(this.getApplication().getApplicationContext());
+        itemDao = db.itemDao();
 
+        readDataFromDB();
+        // test data
+//        for (int i = 0; i < 5; i++) {
+//            items.add(new Item("item" + i));// test data
+//            items.get(i).getTime().add(Calendar.HOUR, i-3);
+//        }
 
         listView = findViewById(R.id.listView);
         add = findViewById(R.id.addButton);
@@ -49,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sortData(items);
-        itemAdapter.notifyDataSetChanged();
+        saveNow();
     }
 
     private void setupListener() {
@@ -80,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     else if (result.getResultCode() == RESULT_CANCELED) {
 //                        Log.i("Updated item in list ", ": canceled");
                     }
-                    sortData(items);
-                    itemAdapter.notifyDataSetChanged();
+                    saveNow();
                 }
         );
 
@@ -122,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 items.remove(position);
-                                sortData(items);
-                                itemAdapter.notifyDataSetChanged();
+                                saveNow();
                             }
                         })
                         .setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -139,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void sortData(List<Item> items) {
+    private void sortData(List<Item> items) {
         Collections.sort(items, (i0, i1) -> {
             if (i0.isTicked() == i1.isTicked())
                 return i0.getTime().compareTo(i1.getTime());
@@ -147,4 +153,57 @@ public class MainActivity extends AppCompatActivity {
                 return i0.isTicked() ? 1 : -1;
         });
     }
+
+    private void readDataFromDB() {
+        CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                List<ItemEntity> itemsFromDB = itemDao.listAll();
+                items = new ArrayList<>();
+                if (itemsFromDB != null && itemsFromDB.size() > 0) {
+                    for (ItemEntity i: itemsFromDB) {
+                        Item temp = new Item(i.getName(), i.getCount());
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(i.getTime());
+                        temp.setTime(c);
+                        items.add(temp);
+                    }
+                }
+            }
+        });
+
+        try {
+            future.get();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveDataToDB() {
+        CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                itemDao.deleteAll();
+                for (Item i: items) {
+                    ItemEntity temp = new ItemEntity(i.getName(), i.getCount(), i.getTime().getTime(), i.isTicked());
+                    itemDao.insert(temp);
+                }
+            }
+        });
+
+        try {
+            future.get();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveNow() {
+        sortData(items);
+        itemAdapter.notifyDataSetChanged();
+        saveDataToDB();
+    }
+
 }
