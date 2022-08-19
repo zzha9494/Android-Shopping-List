@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditAddActivity extends AppCompatActivity {
@@ -55,10 +56,23 @@ public class EditAddActivity extends AppCompatActivity {
             timepicker.setHour(this.hour);
             timepicker.setMinute(this.minute);
         }
+        else {
+            this.editCount.setText("1"); // default 1
+            timepicker.setHour(this.timepicker.getHour() + 1);
+        }
 
     }
 
     public void onSubmitSave(View v) {
+        if (this.editName.getText().toString().trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please input the name.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (this.editCount.getText().toString().trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please input the amount.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent result = new Intent();
 
         result.putExtra("position", this.i);
