@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
         saveNow();
     }
 
@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                         Calendar c = Calendar.getInstance();
                         c.setTime(i.getTime());
                         temp.setTime(c);
+                        temp.setTicked(i.isTicked());
                         items.add(temp);
                     }
                 }
