@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Item> items;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         items = new ArrayList<>();
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+10"));
 
         // test data
         for (int i = 0; i < 1; i++) {
@@ -67,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
                             items.add(updatedItem);
                         else
                             items.set(i, updatedItem);
-                        Log.i("Updated item in list ", ": updated");
+//                        Log.i("Updated item in list ", ": updated");
+                        itemAdapter.notifyDataSetChanged();
                     }
                     else if (result.getResultCode() == RESULT_CANCELED) {
-                        Log.i("Updated item in list ", ": canceled");
+//                        Log.i("Updated item in list ", ": canceled");
                     }
                 }
         );
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name", items.get(i).getName());
                 intent.putExtra("count", items.get(i).getCount());
                 Calendar c = items.get(i).getTime();
+//                Log.i("MainActivity", "calendar + timezone" + c.getTimeZone());
                 intent.putExtra("year", c.get(Calendar.YEAR));
                 intent.putExtra("month", c.get(Calendar.MONTH));
                 intent.putExtra("day", c.get(Calendar.DAY_OF_MONTH));
