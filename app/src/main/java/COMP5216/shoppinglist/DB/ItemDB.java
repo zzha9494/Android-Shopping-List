@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 import android.content.Context;
 import androidx.room.TypeConverters;
 
-@Database(entities = {ItemEntity.class}, version = 1)
+@Database(entities = {ItemEntity.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ItemDB extends RoomDatabase {
     private static final String DATABASE_NAME = "item_db";
